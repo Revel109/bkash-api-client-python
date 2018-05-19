@@ -2,33 +2,12 @@ import logging
 from decimal import Decimal
 from typing import Union
 
-from ._models import PreparedPayment, Payment, PreparedRefund
+from ._models import Payment, Refund
 
 logger = logging.getLogger('bkash.checkout')
 
 
-def create(amount: Union[Decimal, float, int], currency: str, intent: str, invoice_number: str) -> PreparedPayment:
-    """
-    Create a Payment (Sale or Authorize)
-
-    :param amount: The amount as Decimal or float or int
-    :param currency: The current as string
-    :param intent: The name of the intent
-    :param invoice_number: The invoice number (merchant) as string
-    :return:
-    """
-
-    payment = PreparedPayment()
-
-    payment.amount = amount
-    payment.currency = currency
-    payment.intent = intent
-    payment.invoice_number = invoice_number
-
-    return payment
-
-
-def query(payment: Union[Payment, str]):
+def query(payment: Union[Payment, str]) -> Payment:
     """
     Query the transaction status and other details of a Payment
     :param payment:
@@ -43,7 +22,17 @@ def query(payment: Union[Payment, str]):
         raise ValueError(f'Unexpected type for payment: {type(payment)}')
 
 
-def refund(transaction_id: str, amount: Union[Decimal, float, str], currency: str) -> PreparedRefund:
+def execute(payment_id: str) -> Payment:
+    """
+    Execute a payment
+    :param payment_id:
+    :return: Payment object
+    """
+    logger.debug(f"Executing Payment {payment_id}")
+    return Payment()
+
+
+def refund(transaction_id: str, amount: Union[Decimal, float, str], currency: str) -> Refund:
     """
     Provider a refund
     :param transaction_id: The TrxID
@@ -51,14 +40,8 @@ def refund(transaction_id: str, amount: Union[Decimal, float, str], currency: st
     :param currency: The currency of the denomination
     :return:
     """
-
-    prepared_refund = PreparedRefund()
-
-    prepared_refund.transaction_id = transaction_id
-    prepared_refund.amount = amount
-    prepared_refund.currency = currency
-
-    return prepared_refund
+    logger.debug(f"Refuding {transaction_id}")
+    return Refund()
 
 
 def capture(payment: Union[Payment, str]):
