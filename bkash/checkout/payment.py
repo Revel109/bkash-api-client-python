@@ -2,12 +2,12 @@ import logging
 from decimal import Decimal
 from typing import Union
 
-from ._models import Payment, Refund
+from ._models import Payment, Refund, PaymentQuery
 
 logger = logging.getLogger('bkash.checkout')
 
 
-def query(payment: Union[Payment, str]) -> Payment:
+def query(payment: Union[Payment, str]) -> PaymentQuery:
     """
     Query the transaction status and other details of a Payment
     :param payment:

@@ -40,6 +40,10 @@ class Payment:
         logger.debug(f'Capturing {self.payment_id}')
 
 
+class PaymentQuery(Payment):
+    refund_amount: Decimal
+
+
 class Refund:
     original_transaction_id: str
     refund_transaction_id: str
