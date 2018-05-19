@@ -1,0 +1,2 @@
+SALE = 'sale'
+AUTHORIZATION = 'authorization'
